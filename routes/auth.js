@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
   if (user && (await bcrypt.compare(password, user.password))) {
     const token = jwt.sign({ userId: user._id }, 'secret_key', { expiresIn: '1h' });
     req.session.token = token;
-    res.redirect('/profile');
+    res.redirect('/profile/home');
   } else {
     res.redirect('/auth/login');
   }

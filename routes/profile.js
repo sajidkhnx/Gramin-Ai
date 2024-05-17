@@ -15,7 +15,7 @@ router.get('/', verifyToken, async (req, res) => {
   }
 });
 router.get('/home', verifyToken, async (req, res) => {
-  res.render('KASHI (HOME)');
+  res.render('loggedin home');
 });
 function verifyToken(req, res, next) {
   const token = req.session.token;
