@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Disease Prediction</title>
+  <link href="/theme.css" rel="stylesheet" />
+  <style>
+    .prediction-container {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    #predicted-disease {
+      margin-top: 20px;
+    }
+    .loading-spinner {
+      display: none;
+      margin: 20px auto;
+      border: 6px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 6px solid #3498db;
+      width: 40px;
+      height: 40px;
+      animation: spin 2s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <main class="main" id="top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 d-block" data-navbar-on-scroll="data-navbar-on-scroll">
+      <div class="container">
+        <a class="navbar-brand" href="/home"><img src="../assets/img/gallery/graminai.png" width="100" alt="logo" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"> </span></button>
+        <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto pt-2 pt-lg-0 font-base">
+            <li class="nav-item px-2"><a class="nav-link" aria-current="page" href="/home#about">About Us</a></li>
+            <li class="nav-item px-2"><a class="nav-link" href="/home#departments">Services</a></li>
+            <li class="nav-item px-2"><a class="nav-link" href="#findUs">Chatbot Assist</a></li>
+            <li class="nav-item px-2"><a class="nav-link" href="/predict">Predict AI</a></li>
+            <li class="nav-item px-2"><a class="nav-link" href="#findUs">Contact</a></li>
+          </ul><a class="btn btn-sm btn-outline-primary rounded-pill order-1 order-lg-0 ms-lg-4" href="/auth/signup">Sign In</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="py-xxl-10 pb-0" id="home">
+      <div class="container prediction-container">
+        <h1 class="fw-light font-base fs-6 fs-xxl-7">Disease Prediction</h1>
+        <p class="fs-1 mb-5">Enter your symptoms to get a prediction of possible diseases.</p>
+        <form id="predict-form" class="form-group">
+          <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="Enter your symptoms (separated by commas)">
+          <button type="submit" class="btn btn-primary mt-3">Predict</button>
+        </form>
+        <div id="loading" class="loading-spinner"></div>
+        <div id="predicted-disease" class="alert alert-info" style="display: none;"></div>
+      </div>
+    </section>
+
+    <script>
+      document.getElementById('predict-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const symptoms = document.getElementById('symptoms').value;
+        const loadingSpinner = document.getElementById('loading');
+        const resultDiv = document.getElementById('predicted-disease');
+
+        loadingSpinner.style.display = 'block';
+        resultDiv.style.display = 'none';
+
+        fetch('/predict-disease?symptoms=' + encodeURIComponent(symptoms))
+          .then(response => response.json())
+          .then(data => {
+            loadingSpinner.style.display = 'none';
+            if (data.error) {
+              resultDiv.innerHTML = `Error: ${data.error}`;
+              resultDiv.classList.remove('alert-info');
+              resultDiv.classList.add('alert-danger');
+            } else {
+              resultDiv.innerHTML = `
+                <h4>Predicted Disease: ${data.final_prediction}</h4>
+                
+              `;
+              // <p><strong>SVM Model Prediction:</strong> ${data.svm_model_prediction}</p>
+              //   <p><strong>Naive Bayes Prediction:</strong> ${data.naive_bayes_prediction}</p>
+              //   <p><strong>Random Forest Prediction:</strong> ${data.rf_model_prediction}</p>
+              resultDiv.classList.remove('alert-danger');
+              resultDiv.classList.add('alert-info');
+            }
+            resultDiv.style.display = 'block';
+          })
+          .catch(error => {
+            loadingSpinner.style.display = 'none';
+            resultDiv.innerHTML = `Error: ${error.message}`;
+            resultDiv.classList.remove('alert-info');
+            resultDiv.classList.add('alert-danger');
+            resultDiv.style.display = 'block';
+          });
+      });
+    </script>
+  </main>
+</body>
+</html>
