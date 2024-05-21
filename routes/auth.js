@@ -45,6 +45,13 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/doctorpage', async (req, res) => {
+  res.render('doctorspage');
+});
+
+router.get('/videocall', async (req, res) => {
+  res.render('videoscall');
+});
 router.get('/logout', (req, res) => {
   res.clearCookie('token');
   res.redirect('/auth/login');

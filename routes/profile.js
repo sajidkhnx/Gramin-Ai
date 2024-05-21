@@ -15,8 +15,18 @@ router.get('/', verifyToken, async (req, res) => {
   }
 });
 router.get('/home', verifyToken, async (req, res) => {
-  res.render('loggedin home');
+  res.render('loggedin home');  
 });
+
+router.get('/doctorpage', async (req, res) => {
+  res.render('doctorspage');
+});
+
+
+router.get('/video', verifyToken, async (req, res) => {
+  res.render('videos');
+});
+
 function verifyToken(req, res, next) {
   const token = req.session.token;
   if (!token) return res.redirect('/auth/login');
