@@ -82,7 +82,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For any questions or feedback, feel free to reach out to the maintainer:
 
 - **Name:** Sajid Khan
-- **Email:** [your-email@example.com](mailto:your-email@example.com)
+- **Email:** [sajidkhnx.dev07@gmail.com](sajidkhnx.dev07@gmail.com)
 
 
 ![Screenshot (174)](https://github.com/user-attachments/assets/ebd31f21-7d16-4a62-a1e4-94261a6c6874)
